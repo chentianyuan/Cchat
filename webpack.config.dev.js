@@ -2,14 +2,14 @@ const path = require('path') //处理路径问题
 const webpack = require('webpack') //使用webpack自带的HMR模块，监听模块更新
 const merge = require('webpack-merge') //合并webpack.config.js
 const HtmlWebpackPlugin = require('html-webpack-plugin') //自动生成新的html，注入打包后的入口文件，不用手动引入
-const baseConfig = require('./webpack.config.js') //引入要合并的配置文件
+const baseConfig = require('./webpack.config.dev.js') //引入要合并的配置文件
 const root = path.resolve(__dirname, '..') //预先配置绝对路径
 
 module.exports = merge(baseConfig, {
     entry: [
       'webpack/hot/dev-server', // 热替换处理入口文件
       path.resolve(__dirname, 'src/main.js'),
-      path.resolve(__dirname,'src/setup.js')
+      path.resolve(__dirname, 'src/setup.js')
     ],
     //配置devServer中内置了express模块并开启服务器
     devServer: {
@@ -35,17 +35,17 @@ module.exports = merge(baseConfig, {
     },
     devtool: 'inline-source-map', // 用于标记编译后的文件与编译前的文件对应位置，便于调试
     plugins: [
-        //引入HMR模块
+      //引入HMR模块
       new webpack.HotModuleReplacementPlugin(),
       //这个插件将为您生成一个HTML5文件，该文件的 body 中使用script 标记引用了所有 webpack bundle
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, 'setup.html'), // 写上模板文件
-        chunks: ['setup'],
+        filename: 'setup.html',
         inject: 'body' // js的script注入到body底部
       }),
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, 'index.html'), // 写上模板文件
-        chunks: ['index'],
+        filename: 'index.html',
         inject: 'body' // js的script注入到body底部
       })
     ]

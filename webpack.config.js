@@ -10,7 +10,7 @@ module.exports = {
         path: path.resolve(__dirname, './dist'),
         publicPath: '/dist/',
         //出口文件打包后有两个，不再是bundle.js，而是main.js和setup.js
-        filename: '[name].js'
+        filename: '[name].bundle.js'
     },
     resolve:{
         //省略扩展名,首项不能为''
