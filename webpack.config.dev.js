@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin') //自动生成新的htm
 const baseConfig = require('./webpack.config.dev.js') //引入要合并的配置文件
 const root = path.resolve(__dirname, '..') //预先配置绝对路径
 
-module.exports = merge(baseConfig, {
+module.exports = {
     entry: [
       'webpack/hot/dev-server', // 热替换处理入口文件
       path.resolve(__dirname, 'src/main.js'),
@@ -13,7 +13,7 @@ module.exports = merge(baseConfig, {
     ],
     //配置devServer中内置了express模块并开启服务器
     devServer: {
-      contentBase:'./dist',
+      contentBase:path.resolve(__dirname,"dist"),
       historyApiFallback: true, // 404的页面会自动跳转到/页面
       inline: true, // 文件改变自动刷新页面
       progress: true, // 显示编译进度
@@ -49,5 +49,5 @@ module.exports = merge(baseConfig, {
         inject: 'body' // js的script注入到body底部
       })
     ]
-  })
+  }
 

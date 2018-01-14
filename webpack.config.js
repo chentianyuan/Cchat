@@ -3,11 +3,11 @@ var webpack = require('webpack')
 
 module.exports = {
     entry:{
-        main: './src/main.js',
-        setup: './src/setup.js'
+        main: path.resolve(__dirname,"src/main.js"),
+        setup: path.resolve(__dirname,"src/setup.js"),
     },
     output:{
-        path: path.resolve(__dirname, './dist'),
+        path: path.resolve(__dirname, 'dist'),
         publicPath: '/dist/',
         //出口文件打包后有两个，不再是bundle.js，而是main.js和setup.js
         filename: '[name].bundle.js'
@@ -49,5 +49,15 @@ module.exports = {
             test: /\.css$/,
             loaders: ['style-loader', 'css-loader']
         }]
-    }
+	},
+	devServer:{
+		historyApiFallback: true,
+		noInfo: true,
+		proxy:{
+			'/':{
+				target:'http://localhost:3000/'
+			}
+		}
+	},
+	devtool: 'inline-source-map' // 用于标记编译后的文件与编译前的文件对应位置，便于调试
 }
