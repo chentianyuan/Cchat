@@ -6,14 +6,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin') //自动生成新的htm
 module.exports = {
     entry:[
 		'webpack/hot/dev-server', // 热替换处理入口文件
-        path.resolve(__dirname,"src/main.js"),
+        path.resolve(__dirname,"src/index.js"),
         path.resolve(__dirname,"src/setup.js")
 	],
     output:{
         path: path.resolve(__dirname, 'dist'),
         publicPath: '/dist/',
-        //出口文件打包后有两个，不再是bundle.js，而是main.js和setup.js
-        filename: '[name].bundle.js'
+        //出口文件打包后有两个，不再是bundle.js，而是index.js和setup.js
+        filename: '[name].js'
     },
     resolve:{
         //省略扩展名,首项不能为''
@@ -41,7 +41,7 @@ module.exports = {
 		       //这样做能减小项目文件的大小。
 				"plugins":['transform-runtime']
 			},
-			exclude:/node_modules/			
+			exclude: /node_modules/			
 		},
 		{
 			test:/\.vue$/,
@@ -50,8 +50,14 @@ module.exports = {
 		},
 		{
             test: /\.css$/,
-            loaders: ['style-loader', 'css-loader']
-        }]
+			loaders: ['style-loader', 'css-loader'],
+			exclude:/node_modules/			
+		},
+		{
+			test: /\.scss$/,
+			loader:['style-loader','css-loader','sass-loader'],
+			exclude:/node_modules/			
+		}]
 	},
 	devServer:{
 		contentBase:path.resolve(__dirname,"dist"),
@@ -71,6 +77,7 @@ module.exports = {
 		new HtmlWebpackPlugin({
 		  template: path.resolve(__dirname, 'setup.html'), // 写上模板文件
 		  filename: 'setup.html',
+		  //chunks:['']
 		  inject: 'body' // js的script注入到body底部
 		}),
 		new HtmlWebpackPlugin({
@@ -79,5 +86,5 @@ module.exports = {
 		  inject: 'body' // js的script注入到body底部
 		})
 	],
-	devtool: 'inline-source-map' // 用于标记编译后的文件与编译前的文件对应位置，便于调试
+	devtool: 'cheap-module-eval-source-map' // 用于标记编译后的文件与编译前的文件对应位置，便于调试
 }

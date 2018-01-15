@@ -1,5 +1,8 @@
 <template>
-	<div class="message">{{msg}}</div>
+	<div class="message">
+		{{msg}}
+		<div class="test">测试</div>	
+	</div>
 </template>
 
 <script>
@@ -12,8 +15,11 @@
 	}
 </script>
 
-<style>
+<style scoped="scoped" lang="scss">
 	.message{
 		color:blue;
+		.test{
+			color:red;
+		}
 	}
 </style>
