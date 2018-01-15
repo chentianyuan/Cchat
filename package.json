@@ -1,17 +1,20 @@
 {
   "name": "Cchat",
   "version": "1.0.0",
-  "description": "",
+  "description": "Cchat",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"webpack-dev-server --inline --config webpack.config.dev.js",
-    "start":"node ./server/index.js"
+    "build": "webpack webpack.config.js",
+    "dev": "webpack-dev-server --inline --config webpack.config.dev.js",
+    "start": "node ./server/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "mongoose": "^4.13.9",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1"
   },
