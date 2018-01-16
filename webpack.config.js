@@ -4,6 +4,7 @@ const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin') //自动生成新的html，注入打包后的入口文件，不用手动引入
 
 module.exports = {
+	watch: true,
     entry:[
 		'webpack-dev-server/client?http://localhost:3001',
 		'webpack/hot/dev-server', // 热替换处理入口文件
@@ -42,22 +43,22 @@ module.exports = {
 				"plugins":['transform-runtime']
 			},
 			exclude: /node_modules/			
-		},
-		{
+		},{
 			test:/\.vue$/,
 			loader:'vue-loader',
 			exclude:/node_modules/
-		},
-		{
+		},{
             test: /\.css$/,
-			loaders: ['style-loader', 'css-loader'],
-			exclude:/node_modules/			
-		},
-		{
+			loaders: ['style-loader', 'css-loader']
+		},{
 			test: /\.scss$/,
 			loader:['style-loader','css-loader','sass-loader'],
 			exclude:/node_modules/			
-		}]
+		},{
+			test: /\.(eot|svg|ttf|woff|woff2|png)\w*/,
+			loader: 'file-loader'
+		}
+	]
 	},
 	//
 	// devServer:{
