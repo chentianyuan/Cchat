@@ -5,20 +5,20 @@ const HtmlWebpackPlugin = require('html-webpack-plugin') //自动生成新的htm
 
 module.exports = {
     entry:[
+		'webpack-dev-server/client?http://localhost:3001',
 		'webpack/hot/dev-server', // 热替换处理入口文件
-        path.resolve(__dirname,"src/index.js"),
-        path.resolve(__dirname,"src/setup.js")
+        path.resolve(__dirname,"src/index.js")
 	],
     output:{
         path: path.resolve(__dirname, 'dist'),
         publicPath: '/dist/',
         //出口文件打包后有两个，不再是bundle.js，而是index.js和setup.js
-        filename: '[name].js'
+        filename: 'bundle.js'
     },
     resolve:{
         //省略扩展名,首项不能为''
 		//使得引入的时候不要加扩展名
-		extensions:['*','.js','.vue'],
+		extensions:['*','.js','.vue','.sass'],
 		alias:{
             //创建别名，使得方便引入
 			vue: 'vue/dist/vue.js'
@@ -59,27 +59,23 @@ module.exports = {
 			exclude:/node_modules/			
 		}]
 	},
-	devServer:{
-		contentBase:path.resolve(__dirname,"dist"),
-		historyApiFallback: true,
-		noInfo: true,
-		inline: true, // 文件改变自动刷新页面
-		proxy:{
-			'/':{
-				target:'http://localhost:3000/'
-			}
-		}
-	},
+	//
+	// devServer:{
+	// 	contentBase:path.resolve(__dirname,"dist"),
+	// 	historyApiFallback: true,
+	// 	hot:true,
+	// 	noInfo: true,
+	// 	inline: true, // 文件改变自动刷新页面
+	// 	proxy:{
+	// 		'/':{
+	// 			target:'http://localhost:3000/'
+	// 		}
+	// 	}
+	// },
 	plugins: [
 		//引入HMR模块
 		new webpack.HotModuleReplacementPlugin(),
 		//这个插件将为您生成一个HTML5文件，该文件的 body 中使用script 标记引用了所有 webpack bundle
-		new HtmlWebpackPlugin({
-		  template: path.resolve(__dirname, 'setup.html'), // 写上模板文件
-		  filename: 'setup.html',
-		  //chunks:['']
-		  inject: 'body' // js的script注入到body底部
-		}),
 		new HtmlWebpackPlugin({
 		  template: path.resolve(__dirname, 'index.html'), // 写上模板文件
 		  filename: 'index.html',
