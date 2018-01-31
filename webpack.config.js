@@ -13,7 +13,7 @@ module.exports = {
     output:{
         path: path.resolve(__dirname, 'dist'),
         publicPath: '/dist/',
-        //出口文件打包后有两个，不再是bundle.js，而是index.js和setup.js
+        // 多入口文件打包后有两个，不再是bundle.js，而是index.js和setup.js
         filename: 'bundle.js'
     },
     resolve:{
@@ -55,6 +55,7 @@ module.exports = {
 			loader:['style-loader','css-loader','sass-loader'],
 			exclude:/node_modules/			
 		},{
+			//引入font-awesome
 			test: /\.(eot|svg|ttf|woff|woff2|png)\w*/,
 			loader: 'file-loader'
 		}

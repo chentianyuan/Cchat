@@ -8,7 +8,7 @@
 			</div>
 			<div class="box">
 				<div class="input">
-					<p class=""><i class="fa fa-qq"></i><input type="text"></p>
+					<p class=""><i></i><input type="text"></p>
 					<p class=""><i></i><input type="password"></p>
 					<p><a href="javascript:">Login</a></p>
 				</div>	

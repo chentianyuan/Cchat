@@ -64,6 +64,7 @@ var server = new webpackDevServer(compiler, {
     },
 });
 
+//webpack提供的静态服务器供页面展示
 server.listen(3001);
 
 
@@ -76,6 +77,11 @@ server.listen(3001);
 //   res.send(html)
 // })
 
+app.get('/',(req,res)=>{
+    res.send('<h1>接口提供页面，提供接口详细信息</h1>')
+})
+
+//express提供的服务器在3000端口(不设置的话默认3000)
 app.listen(app.get('port'), function () {
   console.log('Visit http://localhost:' + app.get('port'))
 })

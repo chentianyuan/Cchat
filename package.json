@@ -4,7 +4,8 @@
   "description": "Cchat",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "watch": "webpack --config webpack.config.js",
+    "注释！！！！！":"dev启用，打包与热更新都放在server.js中，直接npm start",
     "dev": "webpack-dev-server --inline --config webpack.config.dev.js",
     "start": "node ./server/server.js"
   },
