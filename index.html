@@ -9,11 +9,17 @@
         *{margin:0;padding:0;font-family:Century Gothic, sans-serif}
         a{text-decoration:none;}
         ul{list-style:none;}
+        #index{
+            position: relative;
+        }
     </style>
 </head>
 <body>
     <div id="index"> 
-        <router-view></router-view>
+        <loading></loading>
+        <transition>
+            <router-view></router-view> 
+        </transition>
     </div>
 </body>
 </html>

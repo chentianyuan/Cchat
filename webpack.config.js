@@ -58,6 +58,11 @@ module.exports = {
 			//引入font-awesome
 			test: /\.(eot|svg|ttf|woff|woff2|png)\w*/,
 			loader: 'file-loader'
+		},
+		{ 
+			//处理loading图
+			test: /\.(jpe?g|png|gif|svg)$/i,
+			loader: 'url-loader?limit=8192&name=[name].[ext]'
 		}
 	]
 	},

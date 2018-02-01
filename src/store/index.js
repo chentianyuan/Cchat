@@ -1,27 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import mutations from './mutations'
+import actions from './actions'
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state:{
-		whertherlogin:false,
-		mainHeight:0
+		isloading:false
 	},
-	mutations:{
-		login(state){
-			state.whertherlogin = true
-		},
-		setheight(state,height){
-			state.mainHeight = height
-		}
-	},
-	actions:{
-		login(context){
-			context.commit('login')
-		},
-		setheight(context,height){
-			context.commit('setheight',height)
-		}
-	}
+	mutations,
+	actions
 });

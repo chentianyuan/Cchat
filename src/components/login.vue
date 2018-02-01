@@ -8,15 +8,15 @@
 			</div>
 			<div class="box">
 				<div class="input">
-					<p class=""><i></i><input type="text"></p>
-					<p class=""><i></i><input type="password"></p>
-					<p><a href="javascript:">Login</a></p>
+					<p class="in">账号 :<i></i><input :class="username1?'appaer':''" type="text" v-model="username1"></p>
+					<p class="in">密码 :<i></i><input :class="password1?'appaer':''" type="password" v-model="password1"></p>
+					<p><a href="javascript:" @click="login">Login</a></p>
 				</div>	
 				<div class="registered">
-					<p class=""><i></i><input type="text"></p>
-					<p class=""><i></i><input type="password"></p>
-					<p class=""><i></i><input type="password"></p>
-					<p><a href="javascript:">registered</a></p>
+					<p class="in"><i></i><input type="text" :class="username2?'appaer':''" placeholder="输入注册账号" v-model="username2"></p>
+					<p class="in"><i></i><input type="password" :class="password2?'appaer':''" placeholder="新的密码" v-model="password2"></p>
+					<p class="in"><i></i><input type="password" :class="repeatPassword2?'appaer':''" placeholder="请重新输入" v-model="repeatPassword2"></p>
+					<p><a href="javascript:" @click="register">registered</a></p>
 				</div>
 			</div>
 		</section>	
@@ -25,10 +25,17 @@
 
 <script>
 	import star from './common/star'
+	import axios from 'axios'
+
 	export default{
 		data(){
 			return {
-				state:true
+				state:true,
+				username1:'',
+				password1:'',
+				username2:'',
+				password2:'',
+				repeatPassword2:''
 			}
 		},
 		components:{
@@ -49,6 +56,34 @@
 						document.querySelector(".registered").style.left = 0 + 'px'
 					)
 				}	
+			},
+			login:function(){
+				// 已代理到本地服务器端口
+				this.$store.dispatch('toggleLoging')
+				this.$axios.post('/api/login',{user:this.username1,pwd:this.password1}).then(res=>{
+					//console.log(res.data.msg)
+					if(res.data.state == 1){
+						setTimeout(() => {						
+							this.$store.dispatch('toggleLoging')
+							this.$router.push({path:'./Cchat'})	
+						}, 1000);
+					}else{
+						alert(res.data.msg)
+						this.$store.dispatch('toggleLoging')				
+					}
+				}).catch(err=>{
+					console.log(err)
+				})
+			},
+			register:function(){
+				if(this.password2 !== this.repeatPassword2){
+					alert('两次输入密码不一致')
+					return
+				}else{
+					this.$axios.post('/api/register',{user:this.username2,pwd:this.password2}).then(res=>{
+						console.log(res)
+					})
+				}
 			}
 		}
 	}
@@ -60,7 +95,7 @@
 		text-align:center;
 		.login {
 			width: 100%;
-			height: 400px;
+			height: 250px;
 			margin: 0 auto;
 			position: absolute;
 			top: 50%;
@@ -77,6 +112,7 @@
 			span{
 				transition: 1s all;
 				padding:2px 5px;
+				cursor: pointer;
 			}
 			.in{
 				border-radius:5px;
@@ -87,17 +123,46 @@
 			position: relative;
 			height:200px;
 			overflow: hidden;
+			.appaer{
+				border-bottom:1px solid rgba($color: #fff, $alpha: 1) !important;				
+			}
 			.input,.registered{
 				width:100%;
 				position: absolute;
 				transition:0.5s all;
 				top:0;
+				p:last-child{
+					margin-top:20px;
+					a{
+						transition:.2s all;
+						color:#fff;
+						padding:2px 20px;
+						border-radius:12px;
+						background:rgba(194, 18, 18, .6);
+						font-weight:bold;
+						letter-spacing:1px;
+						&:hover{
+							background:rgba(194, 18, 18, 1);
+						}
+					}
+				}
 			}
 			.input{
 				left:0;
 			}
 			.registered{
 				left:100%;
+			}
+			.in input{
+				outline:none;
+				background:transparent;
+				margin:10px;
+				opacity: 1;
+				border:none;
+				border-bottom:1px solid rgba($color: #fff, $alpha: .3);
+				color:#fff;
+				text-align:center;
+				transition: 1s all;
 			}
 		}
 	}
