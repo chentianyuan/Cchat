@@ -1,6 +1,6 @@
 <template>
-  <div>
-  <div class="header"></div>
+  <div id="mainWarp">
+    <loading></loading>
     <transition :name="transitionName">
       <router-view class="child-view"></router-view>
     </transition>
@@ -8,12 +8,15 @@
 </template>
 
 <script>
+import loading from './common/loading.vue'
+
   export default {
     data () {
       return {
         transitionName: 'slide-left'
       }
     },
+    // beforeRouterUpdate接受三个参数
     beforeRouteUpdate (to, from, next) {
       let isBack = this.$router.isBack
       if (isBack) {
@@ -23,15 +26,18 @@
       }
       this.$router.isBack = false
       next()
+    },
+    components:{
+      loading
     }
   }
 </script>
 
 <style scoped lang="scss">
   .child-view {
-    //position: absolute;
+    position: absolute;
     width:100%;
-    transition: all .8s cubic-bezier(.55,0,.1,1);
+    transition: all .4s cubic-bezier(.55,0,.1,1);
   }
   .slide-left-enter, .slide-right-leave-active {
     opacity: 0;

@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.17.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "file-loader": "^1.1.6",
@@ -23,6 +24,8 @@
     "less-loader": "^4.0.5",
     "mongoose": "^4.13.9",
     "sass-loader": "^6.0.6",
+    "socket.io": "^2.0.4",
+    "socket.io-client": "^2.0.4",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

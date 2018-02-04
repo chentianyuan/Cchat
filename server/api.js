@@ -24,8 +24,8 @@ router.post('/api/login',(req,res)=>{
 
 //注册
 router.post('/api/register',(req,res)=>{
-    db.User.create({name:user,pwd:pwd},(err,doc)=>{
         let { user,pwd } = req.body
+        db.User.create({name:user,pwd:pwd},(err,doc)=>{
         if(!err){
             res.send({state:1,msg:'注册成功'})
         }else{

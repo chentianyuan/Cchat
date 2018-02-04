@@ -35,12 +35,15 @@ module.exports = {
 			query:{
 				//此处对babel的配置本应存在于.babelrc中,现写在配置js loader的query参数中
 				//此处对presets预置属性的配置分别支持es6和es7
-				"presets":['es2015','stage-0'],
+				"presets":[
+					['es2015','stage-0']
+				],
 				//在转换 ES2015 语法为 ECMAScript 5 的语法时，babel 会需要一些辅助函数，例如 _extend。
 				//babel 默认会将这些辅助函数内联到每一个 js 文件里，这样文件多的时候，项目就会很大。
-		       //所以 babel 提供了 transform-runtime 来将这些辅助函数“搬”到一个单独的模块 babel-runtime 中
-		       //这样做能减小项目文件的大小。
-				"plugins":['transform-runtime']
+		       	//所以 babel 提供了 transform-runtime 来将这些辅助函数“搬”到一个单独的模块 babel-runtime 中
+				//这样做能减小项目文件的大小。
+				//除了在webpack中配置还需要创建.babelrc文件，这个文件是babel的专属文件
+				"plugins":['transform-runtime','transform-object-rest-spread']
 			},
 			exclude: /node_modules/			
 		},{

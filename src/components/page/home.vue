@@ -1,9 +1,7 @@
 <template>
     <div>
-        <Header headname="Cchat"></Header>
-        <transition name="transitionName">
+        <Header :headname=val></Header>
             <router-view></router-view>
-        </transition>
         <bottomNav></bottomNav>
     </div>
 </template>
@@ -11,10 +9,29 @@
 <script>
 import Header from '../common/header'
 import bottomNav from '../common/bottomNav'
+import { mapGetters } from 'vuex'
+
+
 export default {
-  components:{
+    data(){
+        return{
+
+        }
+    },
+    components:{
       Header,bottomNav
-  }
+    },
+    computed:{
+      ...mapGetters([
+          'getActive'
+      ]),
+      val(){
+          return this.getActive == 1 ? "Cchat" : "Mine"
+      }
+    },
+    mounted(){
+        console.log(this.getActive)
+    }
 }
 </script>
 

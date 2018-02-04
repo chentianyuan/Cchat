@@ -29,6 +29,7 @@ export default {
         img{
             width:200px;
             height:100px;
+            opacity:.8;
         }
     }
 </style>

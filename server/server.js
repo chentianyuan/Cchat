@@ -12,7 +12,8 @@ var webpack = require('webpack')
 var webpackDevMiddleware = require("webpack-dev-middleware");
 var webpackDevServer = require('webpack-dev-server');
 var config = require("../webpack.config.js");
-
+var http = require('http')
+var io = require('socket.io')(http)
 
 
 // const createBundleRenderer = require('vue-server-renderer').createBundleRenderer
@@ -69,6 +70,11 @@ server.listen(3001);
 app.get('/',(req,res)=>{
     res.send('<h1>接口提供页面，提供接口详细信息</h1>')
 })
+
+io.on('conection',(socket)=>{
+    console.log('有人连进来了')
+})
+
 
 //express提供的服务器在3000端口(不设置的话默认3000)
 app.listen(app.get('port'), function () {

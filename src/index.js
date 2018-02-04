@@ -2,9 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import store from './store'
 import 'font-awesome/css/font-awesome.css'
-import loading from './components/common/loading.vue'
 import axios from 'axios'
-
 import router from './router/routes'
 
 
@@ -15,5 +13,9 @@ new Vue({
 	//注入router的配置文件
 	router,
 	store,
-	components:{ loading }
+	// 所需的loading，toasting都在PageTransiton中加载
+	components:{},
+	mounted(){
+		document.querySelector('#mainWarp').style.height = window.screen.availHeight + 'px'
+	}
 }).$mount("#index")

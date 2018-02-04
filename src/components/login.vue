@@ -10,13 +10,13 @@
 				<div class="input">
 					<p class="in">账号 :<i></i><input :class="username1?'appaer':''" type="text" v-model="username1"></p>
 					<p class="in">密码 :<i></i><input :class="password1?'appaer':''" type="password" v-model="password1"></p>
-					<p><a href="javascript:" @click="login">Login</a></p>
+					<p><button @click="login" :disabled="disable">Login</button></p>
 				</div>	
 				<div class="registered">
 					<p class="in"><i></i><input type="text" :class="username2?'appaer':''" placeholder="输入注册账号" v-model="username2"></p>
 					<p class="in"><i></i><input type="password" :class="password2?'appaer':''" placeholder="新的密码" v-model="password2"></p>
 					<p class="in"><i></i><input type="password" :class="repeatPassword2?'appaer':''" placeholder="请重新输入" v-model="repeatPassword2"></p>
-					<p><a href="javascript:" @click="register">registered</a></p>
+					<p><button @click="register" :disabled="disable">registered</button></p>
 				</div>
 			</div>
 		</section>	
@@ -35,11 +35,18 @@
 				password1:'',
 				username2:'',
 				password2:'',
-				repeatPassword2:''
+				repeatPassword2:'',
+				disable:false
 			}
 		},
 		components:{
 			star
+		},
+		mounted(){
+			let dom = document.querySelector("#enter")
+			if(dom)
+				// window.screen.availHeight获取屏幕可见高度
+				dom.style.height = window.screen.availHeight + 'px'
 		},
 		methods:{
 			changeState:function(val){
@@ -59,7 +66,12 @@
 			},
 			login:function(){
 				// 已代理到本地服务器端口
+				if(!this.username1 || !this.password1){
+					alert('信息填写不完整')
+					return
+				}
 				this.$store.dispatch('toggleLoging')
+				this.disable = true
 				this.$axios.post('/api/login',{user:this.username1,pwd:this.password1}).then(res=>{
 					//console.log(res.data.msg)
 					if(res.data.state == 1){
@@ -69,19 +81,37 @@
 						}, 1000);
 					}else{
 						alert(res.data.msg)
+						this.username1 = ''
+						this.password1 = ''
 						this.$store.dispatch('toggleLoging')				
 					}
+					this.disable = false
 				}).catch(err=>{
 					console.log(err)
 				})
 			},
 			register:function(){
-				if(this.password2 !== this.repeatPassword2){
+				this.$store.dispatch('toggleLoging')
+				this.disable = true								
+				if(!this.username2 || !this.password2 || !this.repeatPassword2){
+					alert('信息填写不完整')
+					return
+				}else if(this.password2 !== this.repeatPassword2){
 					alert('两次输入密码不一致')
 					return
-				}else{
+				} else{
 					this.$axios.post('/api/register',{user:this.username2,pwd:this.password2}).then(res=>{
-						console.log(res)
+						if(res.data.state == 1){
+							setTimeout(() => {
+								this.$store.dispatch('toggleLoging')
+								alert('注册成功,请登录')
+								this.changeState('login')
+							}, 1000);	
+						}else{
+							alert(res.data.msg)
+							this.$store.dispatch('toggleLoging')
+						}
+						this.disable = false						
 					})
 				}
 			}
@@ -133,13 +163,16 @@
 				top:0;
 				p:last-child{
 					margin-top:20px;
-					a{
+					button{
+						border:0;
+						outline:0;						
 						transition:.2s all;
 						color:#fff;
-						padding:2px 20px;
+						padding:4px 20px;
 						border-radius:12px;
 						background:rgba(194, 18, 18, .6);
-						font-weight:bold;
+						//font-weight:bold;
+						font-size:16px;
 						letter-spacing:1px;
 						&:hover{
 							background:rgba(194, 18, 18, 1);

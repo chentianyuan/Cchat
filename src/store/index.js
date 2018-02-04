@@ -7,7 +7,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state:{
-		isloading:false
+		isloading:false,
+		active:1
+	},
+	getters:{
+		getActive: function(state){
+			return state.active
+		}
 	},
 	mutations,
 	actions
