@@ -13,8 +13,8 @@ var webpackDevMiddleware = require("webpack-dev-middleware");
 var webpackDevServer = require('webpack-dev-server');
 var config = require("../webpack.config.js");
 var http = require('http')
+var session = require('express-session')
 var io = require('socket.io')(http)
-
 
 // const createBundleRenderer = require('vue-server-renderer').createBundleRenderer
 
@@ -24,9 +24,23 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cookieParser())
 app.use('/dist', express.static(resolve('../dist')))
+app.use(session({
+    secret: 'ownsecret', // 对session id 相关的cookie 进行签名
+    resave: false,
+    saveUninitialized: true, // 是否保存未初始化的会话
+    // 设置存储session id的cookie信息
+    cookie: {
+        secure: true,
+        maxAge: 1000 * 6 * 3 // 设置次cookie的过期时间
+        // 传统cookie被设置在浏览器中，session id存储在服务器内存中
+    }
+}))
+
 // 使用 express.Router 类来创建可安装的模块化路由处理程序
 // 传入模块化的路由处理程序，当作后端接口
 app.use(api)
+
+
 
 
 //CORS跨域配置

@@ -1,21 +1,33 @@
 <template>
     <section class="main">
         <h5>常用聊天室</h5>
-            <aside>
-                <img src="../../../static/img/chat1.jpg" alt="">
-                <span>聊天室1</span>
-                <i class="fa fa-comment"></i>
-            </aside>
-            <aside>
-                <img src="../../../static/img/chat2.jpg" alt="">
-                <span>聊天室2</span>
-                <i class="fa fa-comment"></i>
+            <aside v-for="(item,index) in list" @click="chatHome(index)">
+                <img :src="item.imgSrc" alt="">
+                <span>聊天室{{index + 1}}</span>
+                <i class="fa fa-comment"></i>                
             </aside>
     </section>
 </template>
 
 <script>
+
 export default {
+    data(){
+        return{
+            list:[
+                {imgSrc:"../../../static/img/chat1.jpg"},
+                {imgSrc:"../../../static/img/chat2.jpg"}
+            ]
+        }
+    },
+    created(){
+        this.$store.commit('CHATING',false)        
+    },
+    methods:{
+        chatHome(index){
+            this.$router.push({path:`Cchat/chat/${index}`})
+        }
+    }
 }
 </script>
 

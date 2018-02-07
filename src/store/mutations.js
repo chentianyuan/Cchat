@@ -8,5 +8,11 @@ export default {
         }else{
             state.active = 1
         }
+    },
+    CHATING:(state,bool)=>{
+        state.whertherChat = bool
+    },
+    SETSOCKET:(state,user)=>{
+        state.socket = user
     }
 }

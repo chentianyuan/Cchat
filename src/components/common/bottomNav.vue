@@ -1,5 +1,5 @@
 <template>
-    <div class="bottom">
+    <div class="bottom" v-show="!getwhertherChat">
         <ul>
             <li @click="changeActive(1)" :class="getActive==1?'big':''">
                 <i :class="getActive==1?'fa fa-comment':''"></i>
@@ -18,7 +18,8 @@ import { mapGetters } from 'vuex'
 export default {
     computed:{
         ...mapGetters([
-            'getActive'
+            'getActive',
+            'getwhertherChat'
         ])
     },
     methods:{

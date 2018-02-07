@@ -1,9 +1,11 @@
 <template>
     <div>
         <Header :headname=val></Header>
-            <router-view></router-view>
+            <transition :name="transitionName">
+                    <router-view class="child-view"></router-view>
+            </transition>
         <bottomNav></bottomNav>
-    </div>
+    </div>    
 </template>
 
 <script>
@@ -15,22 +17,36 @@ import { mapGetters } from 'vuex'
 export default {
     data(){
         return{
-
+            transitionName: 'slide-left'
         }
+    },
+    // beforeRouterUpdate接受三个参数
+    // 需要的地方设置次路由钩子即可
+    beforeRouteUpdate (to, from, next) {
+      let isBack = this.$router.isBack
+      if (isBack) {
+        this.transitionName = 'slide-right'
+      } else {
+        this.transitionName = 'slide-left'
+      }
+      this.$router.isBack = false
+      next()
     },
     components:{
       Header,bottomNav
     },
     computed:{
       ...mapGetters([
-          'getActive'
+          'getActive',
+          'getwhertherChat'
       ]),
       val(){
-          return this.getActive == 1 ? "Cchat" : "Mine"
+          if(this.getwhertherChat){
+              return '聊天室' 
+          }else{
+              return this.getActive == 1 ? "Cchat" : "Mine"
+          }
       }
-    },
-    mounted(){
-        console.log(this.getActive)
     }
 }
 </script>

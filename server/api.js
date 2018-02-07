@@ -9,6 +9,8 @@ router.post('/api/login',(req,res)=>{
         let { user,pwd } = req.body
         for(value of doc){
             if(user == value.name && pwd == value.pwd){
+                req.session.userName = user
+                console.log(req.session)
                 res.send({state:1,msg:'登陆成功'})
                 return 
             }

@@ -33,12 +33,13 @@ import loading from './common/loading.vue'
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
   .child-view {
     position: absolute;
     width:100%;
     transition: all .4s cubic-bezier(.55,0,.1,1);
   }
+  //设置好vuetransition中预定的类的动效后，可复用至任何router-view
   .slide-left-enter, .slide-right-leave-active {
     opacity: 0;
     -webkit-transform: translate(50px, 0);

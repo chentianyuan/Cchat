@@ -8,11 +8,12 @@ import chat from '../components/page/chat'
 import PageTransition from '../components/PageTransition'
 
 Vue.use(Router)
-Router.prototype.goBack = function () {
+Router.prototype.go = function () {
     this.isBack = true
     window.history.go(-1)
 }
       
+
 export default new Router({
     routes:[{
         path:'/',
