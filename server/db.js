@@ -9,9 +9,17 @@ const userSchema = new Schema({
     pwd: String
 })
 
+const chatSchema = new Schema({
+    user: String,
+    content: String,
+    date: Number,
+    roomId: Number 
+})
+
 const Models = {
     // model自动寻找传入模型名称的复数版本,并转为小写，所以这边变成了users
-    User: mongoose.model('User',userSchema)
+    User: mongoose.model('User',userSchema),
+    Chat: mongoose.model('Chat',chatSchema)
 }
 
 // 连接数据库

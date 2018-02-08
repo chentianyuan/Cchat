@@ -26,6 +26,9 @@
 <script>
 	import star from './common/star'
 	import axios from 'axios'
+	import io from 'socket.io-client';
+	import { mapGetters } from 'vuex'
+
 
 	export default{
 		data(){
@@ -42,11 +45,32 @@
 		components:{
 			star
 		},
+		computed:{
+			...mapGetters([
+				'getSocket'
+			])
+		},
+		computed:{
+			...mapGetters([
+				'getLogin'
+			])
+		},
+		created(){
+			if(this.getSocket){
+				sessionStorage.clear()
+			}
+		},
 		mounted(){
-			let dom = document.querySelector("#enter")
-			if(dom)
+			this.$nextTick(()=>{
+				let dom = document.querySelector("#enter")
 				// window.screen.availHeight获取屏幕可见高度
 				dom.style.height = window.screen.availHeight + 'px'
+				window.onkeydown = (e) => {
+					if(event.keyCode == 13){
+						this.login()
+					}
+				}
+			})
 		},
 		methods:{
 			changeState:function(val){
@@ -73,9 +97,11 @@
 				this.$store.dispatch('toggleLoging')
 				this.disable = true
 				this.$axios.post('/api/login',{user:this.username1,pwd:this.password1}).then(res=>{
-					//console.log(res.data.msg)
 					if(res.data.state == 1){
-						setTimeout(() => {						
+						setTimeout(() => {		
+							sessionStorage.setItem('USER',this.username1)
+							this.$store.commit('SETLOGIN',true)
+							this.$store.commit('SETUSER',this.username1)				
 							this.$store.dispatch('toggleLoging')
 							this.$router.push({path:'./Cchat'})	
 						}, 1000);

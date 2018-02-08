@@ -20,6 +20,13 @@ export default {
             transitionName: 'slide-left'
         }
     },
+    created(){
+        if(!this.getLogin){
+            alert(this.getLogin)
+            alert('请先登录')
+            this.$router.push({path:'/'})
+        }
+    },
     // beforeRouterUpdate接受三个参数
     // 需要的地方设置次路由钩子即可
     beforeRouteUpdate (to, from, next) {
@@ -37,6 +44,7 @@ export default {
     },
     computed:{
       ...mapGetters([
+          'getLogin',
           'getActive',
           'getwhertherChat'
       ]),

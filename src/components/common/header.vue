@@ -26,6 +26,7 @@ export default {
         background: #eeeeee;
         color:#000;
         font-size:1rem;
+        z-index:99;
         i{
             position: absolute;
             left:0;

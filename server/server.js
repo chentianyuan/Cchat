@@ -8,21 +8,23 @@ const db = require('./db')
 const resolve = file => path.resolve(__dirname, file)
 const api = require('./api')
 const app = express()
-var webpack = require('webpack')
-var webpackDevMiddleware = require("webpack-dev-middleware");
-var webpackDevServer = require('webpack-dev-server');
-var config = require("../webpack.config.js");
-var http = require('http')
+const server = require('./webpack')
+
+var http = require('http').Server(app);
 var session = require('express-session')
-var io = require('socket.io')(http)
+// var io = require('socket.io')(http)
+var websocket = require('./websocket')
+
 
 // const createBundleRenderer = require('vue-server-renderer').createBundleRenderer
 
 app.set('port', (process.env.port || 3000))
-//app.use(favicon(resolve('../dist/favicon.ico')))
+// app.use(favicon(resolve('../dist/favicon.ico')))
+// 处理请求体所带的参数转为json格式方便处理
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cookieParser())
+// 处理静态文件路径
 app.use('/dist', express.static(resolve('../dist')))
 app.use(session({
     secret: 'ownsecret', // 对session id 相关的cookie 进行签名
@@ -35,13 +37,6 @@ app.use(session({
         // 传统cookie被设置在浏览器中，session id存储在服务器内存中
     }
 }))
-
-// 使用 express.Router 类来创建可安装的模块化路由处理程序
-// 传入模块化的路由处理程序，当作后端接口
-app.use(api)
-
-
-
 
 //CORS跨域配置
 app.all('*',(req,res,next)=>{
@@ -58,39 +53,29 @@ app.all('*',(req,res,next)=>{
 });
 
 
-var compiler = webpack(config);
-var server = new webpackDevServer(compiler, {
-    hot: true,
-    historyApiFallback: false,
-    // noInfo: true,
-    stats: { 
-        colors: true  // 用颜色标识
-    },
-    proxy: {
-        "/api/*":{
-            // network上显示的是localhost:3001其实已经被代理
-            // 用于转发api请求，但webpack自己提供的并不太好用
-            target:"http://localhost:3000", 
-            changeOrigin: true
-        }
-    },
-});
 
-//webpack提供的静态服务器供页面展示
+
+// webpack提供的静态服务器供页面展示
 server.listen(3001);
 
-// port3000提供的是api接口服务，不聊，要看业务页面要去3001端口
+// port3000提供的是api接口服务和socket.io连接监听程序，要看业务页面要去3001端口
 
 app.get('/',(req,res)=>{
-    res.send('<h1>接口提供页面，提供接口详细信息</h1>')
+    res.send(
+        '<h1>接口提供页面，提供接口详细信息</h1><h2>请访问3001端口</h2>'
+    )
 })
 
-io.on('conection',(socket)=>{
-    console.log('有人连进来了')
-})
+// 使用 express.Router 类来创建可安装的模块化路由处理程序
+// 传入模块化的路由处理程序，当作后端接口
+app.use(api)
+
+// socket.io处理通信
+websocket(http)
 
 
-//express提供的服务器在3000端口(不设置的话默认3000)
-app.listen(app.get('port'), function () {
+// express提供的服务器在3000端口(不设置的话默认3000)
+// 此处是由http模块express为载体的服务器端
+http.listen(app.get('port'), function () {
   console.log('Visit http://localhost:' + app.get('port'))
 })

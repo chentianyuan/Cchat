@@ -36,4 +36,26 @@ router.post('/api/register',(req,res)=>{
     })
 })
 
+// 聊天内容
+router.get('/api/chatContent',(req,res)=>{
+    db.Chat.find({},(err,doc)=>{
+        if(!err){
+            res.send({state:1,msg:doc})
+        }else{
+            res.send({state:0,msg:'查询失败'})
+        }
+    })
+})
+
+router.post('/api/chatEnter',(req,res)=>{
+    let { user,date,content,roomId } = req.body
+    db.Chat.create({user:user,date:date,content:content,roomId:roomId},(err,doc)=>{
+        if(!err){
+            res.send({state:1,msg:'存储成功'})
+        }else{
+            res.send({state:0,msg:'存储失败'})
+        }
+    })
+})
+
 module.exports = router

@@ -1,4 +1,10 @@
 export default {
+    SETLOGIN:(state,bol)=>{
+        state.islogin = bol
+    },
+    SETUSER:(state,name)=>{
+        state.userInfo.username = name
+    },
     LOADING_TOGGLE:(state)=>{
         state.isloading = !state.isloading
     },

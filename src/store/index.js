@@ -8,10 +8,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state:{
 		isloading:false,
+		islogin:false,
 		active:1,
 		whertherChat:false,
 		// 存储连接的用户
-		socket:''
+		socket:'',
+		userInfo:{
+			username:sessionStorage.getItem('USER')?sessionStorage.getItem('USER'):""
+		}
 	},
 	getters:{
 		getActive: function(state){
@@ -20,7 +24,9 @@ export default new Vuex.Store({
 		getwhertherChat: function(state){
 			return state.whertherChat
 		},
-		getSocket: state => state.socket
+		getSocket: state => state.socket,
+		getUserInfo: state => state.userInfo,
+		getLogin: state => state.islogin
 	},
 	mutations,
 	actions
