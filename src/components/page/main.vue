@@ -3,7 +3,7 @@
         <h5>常用聊天室</h5>
             <aside v-for="(item,key) in list" @click="chatHome(key)" :key="key">
                 <img :src="item.imgSrc" alt="">
-                <span>聊天室{{index + 1}}</span>
+                <span>聊天室{{key + 1}}</span>
                 <i class="fa fa-comment"></i>                
             </aside>
     </section>
