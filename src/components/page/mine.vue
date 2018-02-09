@@ -2,7 +2,7 @@
   <div class="mine">
       <section class="mineInfo"></section>
       <ul>
-        <li v-for="(item,key) in muen" @click="logout" :key="key">{{item.til}}</li>
+        <li v-for="(item,key) in muen" @click="logout(key)" :key="key">{{item.til}}</li>
       </ul>
   </div>
 </template>
@@ -25,9 +25,9 @@ export default {
       this.$store.commit('ACTIVE_TOGGLE')
     },
     methods:{
-      logout(index){
-        switch(index){
-          case 3:
+      logout(key){
+        switch(key){
+          case 2:
               this.$router.push({path:'/'})
               break
         }

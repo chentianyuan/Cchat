@@ -11,7 +11,7 @@
 <script>
 import Header from '../common/header'
 import bottomNav from '../common/bottomNav'
-import { mapGetters } from 'vuex'
+import { mapGetters,mapMutations } from 'vuex'
 
 
 export default {
@@ -22,8 +22,8 @@ export default {
     },
     created(){
         if(!this.getLogin){
-            alert(this.getLogin)
-            alert('请先登录')
+            this.SETALERTINFO('请将信息填写完整')
+			this.SETALERT(true)
             this.$router.push({path:'/'})
         }
     },
@@ -55,6 +55,12 @@ export default {
               return this.getActive == 1 ? "Cchat" : "Mine"
           }
       }
+    },
+    methods:{
+        ...mapMutations([
+            'SETALERT',
+			'SETALERTINFO'
+        ])
     }
 }
 </script>

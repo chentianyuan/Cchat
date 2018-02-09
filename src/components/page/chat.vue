@@ -19,7 +19,7 @@
 <script>
 import io from 'socket.io-client'
 import axios from 'axios'
-import { mapGetters } from 'vuex'
+import { mapGetters,mapMutations } from 'vuex'
 
 export default {
     data(){
@@ -60,6 +60,10 @@ export default {
         ])
     },
     methods:{
+        ...mapMutations([
+            'SETALERT',
+            'SETALERTINFO'
+        ]),
         enter(){
             if(!this.inputText){
                 return
@@ -76,10 +80,12 @@ export default {
                     this.inputText = ''
                     this.getSocket.emit('send message')
                 }else{
-                    alert('服务器错误')
+                    this.SETALERTINFO('服务器错误')
+			        this.SETALERT(true)
                 }
             }).catch(err=>{
-                alert('发送失败')
+                this.SETALERTINFO('发送失败')
+			    this.SETALERT(true)
             })
         },
         getMessage(){

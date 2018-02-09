@@ -4,11 +4,13 @@
     <transition :name="transitionName">
       <router-view class="child-view"></router-view>
     </transition>
+    <alerting></alerting>
   </div>
 </template>
 
 <script>
 import loading from './common/loading.vue'
+import alerting from './common/alerting.vue'
 
   export default {
     data () {
@@ -28,7 +30,7 @@ import loading from './common/loading.vue'
       next()
     },
     components:{
-      loading
+      loading,alerting
     }
   }
 </script>

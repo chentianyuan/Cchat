@@ -27,7 +27,7 @@
 	import star from './common/star'
 	import axios from 'axios'
 	import io from 'socket.io-client';
-	import { mapGetters } from 'vuex'
+	import { mapGetters, mapState , mapMutations } from 'vuex'
 
 
 	export default{
@@ -47,12 +47,13 @@
 		},
 		computed:{
 			...mapGetters([
-				'getSocket'
-			])
-		},
-		computed:{
-			...mapGetters([
-				'getLogin'
+				'getLogin',
+				'getSocket',
+				'alertInfo'
+			]),
+			...mapState([
+				"isAlert",
+            	"alertInfo"
 			])
 		},
 		created(){
@@ -73,6 +74,10 @@
 			})
 		},
 		methods:{
+			...mapMutations([
+				'SETALERT',
+				'SETALERTINFO'
+			]),
 			changeState:function(val){
 				if((val == 'login' && this.state)||(val == 'registered') && !this.state){
 					return 
@@ -91,7 +96,8 @@
 			login:function(){
 				// 已代理到本地服务器端口
 				if(!this.username1 || !this.password1){
-					alert('信息填写不完整')
+					this.SETALERTINFO('请将信息填写完整')
+					this.SETALERT(true)
 					return
 				}
 				this.$store.dispatch('toggleLoging')
@@ -106,7 +112,8 @@
 							this.$router.push({path:'./Cchat'})	
 						}, 1000);
 					}else{
-						alert(res.data.msg)
+						this.SETALERTINFO(res.data.msg)
+						this.SETALERT(true)
 						this.username1 = ''
 						this.password1 = ''
 						this.$store.dispatch('toggleLoging')				
@@ -117,27 +124,35 @@
 				})
 			},
 			register:function(){
-				this.$store.dispatch('toggleLoging')
 				this.disable = true								
 				if(!this.username2 || !this.password2 || !this.repeatPassword2){
-					alert('信息填写不完整')
+					this.SETALERTINFO('请将信息填写完整')
+					this.SETALERT(true)
+					this.disable = false										
 					return
 				}else if(this.password2 !== this.repeatPassword2){
-					alert('两次输入密码不一致')
+					this.SETALERTINFO('两次输入密码不一致')
+					this.SETALERT(true)
+					this.password2 = ''
+					this.repeatPassword2 = ''
+					this.disable = false										
 					return
 				} else{
+					this.$store.dispatch('toggleLoging')
 					this.$axios.post('/api/register',{user:this.username2,pwd:this.password2}).then(res=>{
 						if(res.data.state == 1){
 							setTimeout(() => {
 								this.$store.dispatch('toggleLoging')
-								alert('注册成功,请登录')
+								this.SETALERTINFO('注册成功,请登录')
+								this.SETALERT(true)
 								this.changeState('login')
 							}, 1000);	
 						}else{
-							alert(res.data.msg)
+							this.SETALERTINFO(res.data.msg)
+							this.SETALERT(true)
 							this.$store.dispatch('toggleLoging')
 						}
-						this.disable = false						
+						this.disable = false												
 					})
 				}
 			}

@@ -7,6 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state:{
+		isAlert:false,
 		isloading:false,
 		islogin:false,
 		active:1,
@@ -15,7 +16,8 @@ export default new Vuex.Store({
 		socket:'',
 		userInfo:{
 			username:sessionStorage.getItem('USER')?sessionStorage.getItem('USER'):""
-		}
+		},
+		alertInfo:''
 	},
 	getters:{
 		getActive: function(state){
@@ -26,7 +28,8 @@ export default new Vuex.Store({
 		},
 		getSocket: state => state.socket,
 		getUserInfo: state => state.userInfo,
-		getLogin: state => state.islogin
+		getLogin: state => state.islogin,
+		getAlertInfo: state => state.alertInfo
 	},
 	mutations,
 	actions

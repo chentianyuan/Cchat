@@ -1,6 +1,6 @@
 export default {
-    SETLOGIN:(state,bol)=>{
-        state.islogin = bol
+    SETLOGIN:(state,bool)=>{
+        state.islogin = bool
     },
     SETUSER:(state,name)=>{
         state.userInfo.username = name
@@ -20,5 +20,11 @@ export default {
     },
     SETSOCKET:(state,user)=>{
         state.socket = user
+    },
+    SETALERT:(state,bool)=>{
+        state.isAlert = bool
+    },
+    SETALERTINFO:(state,info)=>{
+        state.alertInfo = info
     }
 }
