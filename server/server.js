@@ -55,8 +55,11 @@ app.all('*',(req,res,next)=>{
 
 
 
-// webpack提供的静态服务器供页面展示
-server.listen(3001);
+// webpack提供的静态服务器供页面展示,当通过nodejs提供dev-server服务时,需要在webpakc入口文件添加webpack-dev-server/client?http://«path»:«port»/
+// 并且将<script src="http://localhost:3001/webpack-dev-server.js"></script>添加到html文件中
+server.listen(3001,'0.0.0.0',()=>{
+    
+});
 
 // port3000提供的是api接口服务和socket.io连接监听程序，要看业务页面要去3001端口
 
@@ -76,6 +79,6 @@ websocket(http)
 
 // express提供的服务器在3000端口(不设置的话默认3000)
 // 此处是由http模块express为载体的服务器端
-http.listen(app.get('port'), function () {
+http.listen(app.get('port'), '0.0.0.0',function () {
   console.log('Visit http://localhost:' + app.get('port'))
 })

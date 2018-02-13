@@ -32,7 +32,7 @@ export default {
     created(){
         this.roomId = this.$route.params.id
         this.$store.commit('CHATING',true)
-        if(!this.getSocket){
+        if(!this.getSocket && this.roomId != 'robot'){
             this.$store.commit('SETSOCKET',io.connect('localhost:3000'))
         }
         this.getMessage()
@@ -49,9 +49,11 @@ export default {
                 }
 			}
         })
-        this.getSocket.on('chat message',()=>{
-            this.getMessage()
-        })
+        if(this.getSocket){
+            this.getSocket.on('chat message',()=>{
+                this.getMessage()
+            })
+        }
     },
     computed:{
         ...mapGetters([
@@ -66,6 +68,8 @@ export default {
         ]),
         enter(){
             if(!this.inputText){
+                this.SETALERTINFO('您要发什么?')
+			    this.SETALERT(true)
                 return
             }
             var options = { 
@@ -74,6 +78,27 @@ export default {
                 date:new Date().getTime(),
                 roomId:this.roomId
             }
+            if(this.roomId != 'robot'){
+                this.sendMessage(options)
+            }else{
+                this.$axios.get(`/robot?msg=${this.inputText}&key=free`).then(res=>{
+                    // var robot = new Promise(resolve=>{
+                    //     sendMessage(options)
+                    // }).then()
+                    console.log(res)
+                    var robotoptions = {
+                        user:'Cchat大冰',
+                        content:res.data.content,
+                        date:new Date().getTime(),
+                        roomId:this.roomId
+                    }
+                    this.contents = [...this.contents,options,robotoptions]
+                    console.log(this.contents)
+                })
+            }
+            
+        },
+        sendMessage(options){
             this.$axios.post('/api/chatEnter',options).then(res=>{
                 if(res.data.state){
                     this.contents.push(options)

@@ -12,11 +12,16 @@ var server = new webpackDevServer(compiler, {
         colors: true  // 用颜色标识
     },
     proxy: {
-        "/api/*":{
+        "/api":{
             // network上显示的是localhost:3001其实已经被代理
             // 用于转发api请求，但webpack自己提供的并不太好用
             target:"http://localhost:3000", 
             changeOrigin: true
+        },
+        "/robot":{
+            taeget:'http://api.qingyunke.com/api.php',
+            pathRewrite:{'^/robot':''},
+            changeOrigin: true            
         }
     },
 });

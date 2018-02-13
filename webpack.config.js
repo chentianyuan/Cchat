@@ -7,7 +7,7 @@ module.exports = {
 	watch: true,
     entry:[
 		'webpack-dev-server/client?http://localhost:3001',
-		'webpack/hot/dev-server', // 热替换处理入口文件
+		//'webpack/hot/dev-server', // 热替换处理入口文件
         path.resolve(__dirname,"src/index.js")
 	],
     output:{
@@ -69,23 +69,10 @@ module.exports = {
 		}
 	]
 	},
-	//
-	// devServer:{
-	// 	contentBase:path.resolve(__dirname,"dist"),
-	// 	historyApiFallback: true,
-	// 	hot:true,
-	// 	noInfo: true,
-	// 	inline: true, // 文件改变自动刷新页面
-	// 	proxy:{
-	// 		'/':{
-	// 			target:'http://localhost:3000/'
-	// 		}
-	// 	}
-	// },
 	plugins: [
-		//引入HMR模块
+		// 引入HMR模块(通过nodejs启动时需要添加)
 		new webpack.HotModuleReplacementPlugin(),
-		//这个插件将为您生成一个HTML5文件，该文件的 body 中使用script 标记引用了所有 webpack bundle
+		// 这个插件将为您生成一个HTML5文件，该文件的 body 中使用script 标记引用了所有 webpack bundle
 		new HtmlWebpackPlugin({
 		  template: path.resolve(__dirname, 'index.html'), // 写上模板文件
 		  filename: 'index.html',

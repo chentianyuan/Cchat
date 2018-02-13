@@ -9,6 +9,18 @@ import router from './router/routes'
 Vue.use(Vuex)
 Vue.prototype.$axios = axios //Vue实例添加axios方法
 
+// http request 拦截器
+axios.interceptors.request.use(
+    config => {
+        if (store.state.token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
+            config.headers.Authorization = `token ${store.state.token}`;
+        }
+        return config;
+    },
+    err => {
+        return Promise.reject(err);
+});
+
 router.beforeEach((to, from, next) => {
 	store.dispatch('toggleLoging')
 	next()

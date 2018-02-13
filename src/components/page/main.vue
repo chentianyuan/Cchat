@@ -6,6 +6,12 @@
                 <span>聊天室{{key + 1}}</span>
                 <i class="fa fa-comment"></i>                
             </aside>
+        <h5>Robot</h5>
+        <aside @click="chatHome('robot')">
+                <img src="../../../static/img/chat3.jpg" alt="">
+                <span>Cchat大冰</span>
+                <i class="fa fa-comment"></i>                
+        </aside>
     </section>
 </template>
 

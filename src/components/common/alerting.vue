@@ -50,6 +50,7 @@ export default {
             text-align: center;
             box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.6);    
             user-select: none;
+            overflow: hidden;
             border-radius: 12px;
             div{
                 color:#111;
