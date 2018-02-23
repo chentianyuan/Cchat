@@ -7,7 +7,7 @@ module.exports = {
 	watch: true,
     entry:[
 		'webpack-dev-server/client?http://localhost:3001',
-		//'webpack/hot/dev-server', // 热替换处理入口文件
+		'webpack/hot/dev-server', // 热替换处理入口文件
         path.resolve(__dirname,"src/index.js")
 	],
     output:{
@@ -58,14 +58,15 @@ module.exports = {
 			loader:['style-loader','css-loader','sass-loader'],
 			exclude:/node_modules/			
 		},{
-			//引入font-awesome
+			// 引入font-awesome
 			test: /\.(eot|svg|ttf|woff|woff2|png)\w*/,
-			loader: 'file-loader'
+			loader: 'file-loader?outputPath=font/'
 		},
 		{ 
-			//处理loading图
+			// 处理loading图
 			test: /\.(jpe?g|png|gif|svg)$/i,
-			loader: 'url-loader?limit=8192&name=[name].[ext]'
+			// 参数中控制打包后文件的生成位置
+			loader: 'url-loader?limit=8192&name=[name].[ext]&outputPath=image/'
 		}
 	]
 	},

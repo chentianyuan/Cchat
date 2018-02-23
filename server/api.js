@@ -2,6 +2,8 @@
 const express = require('express')
 const router = express.Router()
 const db = require('./db')
+const axios = require('axios')
+
 
 // 登陆
 router.post('/api/login',(req,res)=>{
@@ -10,12 +12,10 @@ router.post('/api/login',(req,res)=>{
         for(value of doc){
             if(user == value.name && pwd == value.pwd){
                 req.session.userName = user
-                console.log(req.session)
                 res.send({state:1,msg:'登陆成功'})
                 return 
             }
             if(user == value.name && pwd != value.pwd){
-                console.log(user,pwd)
                 res.send({state:0,msg:'密码输入错误，请重新输入'})
                 return
             }
@@ -55,6 +55,19 @@ router.post('/api/chatEnter',(req,res)=>{
         }else{
             res.send({state:0,msg:'存储失败'})
         }
+    })
+})
+
+router.post('/api/robot',(req,res)=>{
+    // console.log(req.body)
+    let { key,appid,msg } = req.body
+    // 写在url中的参数最好encode之后再交由后端解码,英文则无需解码
+    axios.get(`http://api.qingyunke.com/api.php?key=${ key }&appid=${ appid }&msg=${ encodeURI(msg) }`,{header:'application/json'}).then((response)=>{
+        // console.log(response.data)
+        res.send(response.data)
+    }).catch(err=>{
+        // console.log(err)
+        res.send({content:'接口挂了亲...'})
     })
 })
 

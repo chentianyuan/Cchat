@@ -9,10 +9,10 @@ import router from './router/routes'
 Vue.use(Vuex)
 Vue.prototype.$axios = axios //Vue实例添加axios方法
 
-// http request 拦截器
+// axios request 拦截器
 axios.interceptors.request.use(
     config => {
-        if (store.state.token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
+        if (store.state.token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token，以验证登陆者的身份
             config.headers.Authorization = `token ${store.state.token}`;
         }
         return config;
@@ -20,6 +20,13 @@ axios.interceptors.request.use(
     err => {
         return Promise.reject(err);
 });
+
+// 其实可以在这边做Loading的加载与关闭，不用写到每个接口中去
+
+// axios response 拦截器
+axios.interceptors.response.use(
+	config => config
+)
 
 router.beforeEach((to, from, next) => {
 	store.dispatch('toggleLoging')

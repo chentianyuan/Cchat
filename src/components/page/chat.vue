@@ -81,11 +81,13 @@ export default {
             if(this.roomId != 'robot'){
                 this.sendMessage(options)
             }else{
-                this.$axios.get(`/robot?msg=${this.inputText}&key=free`).then(res=>{
-                    // var robot = new Promise(resolve=>{
-                    //     sendMessage(options)
-                    // }).then()
-                    console.log(res)
+                // 机器人接口
+                var moren = {
+                    key: 'free',
+                    appid: 0,
+                    msg: this.inputText
+                }
+                this.$axios.post('/api/robot',moren).then(res=>{
                     var robotoptions = {
                         user:'Cchat大冰',
                         content:res.data.content,
@@ -93,7 +95,10 @@ export default {
                         roomId:this.roomId
                     }
                     this.contents = [...this.contents,options,robotoptions]
-                    console.log(this.contents)
+                    this.inputText = ''
+                    this.$nextTick(()=>{
+                        document.querySelector('.content').scrollTop = document.querySelector('.content').scrollHeight
+                    })
                 })
             }
             
