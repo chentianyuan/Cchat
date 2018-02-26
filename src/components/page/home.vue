@@ -22,9 +22,9 @@ export default {
     },
     created(){
         if(!this.getLogin){
-            this.SETALERTINFO('请将信息填写完整')
-			this.SETALERT(true)
-            this.$router.push({path:'/'})
+            // this.SETALERTINFO('请将信息填写完整')
+			// this.SETALERT(true)
+            // this.$router.push({path:'/'})
         }
     },
     // beforeRouterUpdate接受三个参数

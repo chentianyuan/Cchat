@@ -6,12 +6,19 @@
                     <i>{{item.user}}</i>
                     <span>{{item.date | timetrans}}</span>
                 </header>
-                <aside>{{item.content}}</aside>    
+                <aside v-if="item.content.indexOf('gif') == -1">{{item.content}}</aside>    
+                <img v-if="item.content.indexOf('gif') != -1" :src="item.content"/>    
             </section>  
         </div>
         <div class="bottom">
+            <div class="icon" @click="emoji">
+                <span>emoji</span>
+                <section class="gif" v-show="gifshow">
+                    <img  :key="key" v-for="(gifsrc,key) in gifList" :src="gifsrc"  @click="enter(key)"/>
+                </section>
+            </div>
             <input type="text" v-model="inputText"/>
-            <button @click="enter">发送</button>
+            <button @click="enter('')">发送</button>
         </div>
     </div>
 </template>
@@ -26,7 +33,15 @@ export default {
         return{
             contents:'',
             inputText:'',
-            roomId:''
+            roomId:'',
+            gifList:[
+                '../../../static/gif/1.gif',
+                '../../../static/gif/2.gif',
+                '../../../static/gif/3.gif',
+                '../../../static/gif/4.gif',
+                '../../../static/gif/5.gif'               
+            ],
+            gifshow:false
         }
     },
     created(){
@@ -39,7 +54,7 @@ export default {
     },
     mounted(){
         this.$nextTick(()=>{
-            document.querySelector('.content').style.height = `${window.screen.availHeight - 100}px`
+            document.querySelector('.content').style.height = `${window.screen.availHeight - 120}px`
             document.querySelector('.header').style.position = 'fixed'
             // document.querySelector('.content').scrollTop = document.querySelector('.content').scrollHeight
             window.scrollTo(0,10000)
@@ -66,15 +81,18 @@ export default {
             'SETALERT',
             'SETALERTINFO'
         ]),
-        enter(){
-            if(!this.inputText){
+        emoji(){
+            this.gifshow = !this.gifshow
+        },
+        enter(gifIndex){
+            if(!this.inputText && !gifIndex){
                 this.SETALERTINFO('您要发什么?')
 			    this.SETALERT(true)
                 return
             }
             var options = { 
                 user:this.getUserInfo.username,
-                content:this.inputText,
+                content:this.inputText || `../../../static/gif/${gifIndex}.gif`,
                 date:new Date().getTime(),
                 roomId:this.roomId
             }
@@ -98,10 +116,10 @@ export default {
                     this.inputText = ''
                     this.$nextTick(()=>{
                         document.querySelector('.content').scrollTop = document.querySelector('.content').scrollHeight
+                        this.gifshow = false      
                     })
                 })
             }
-            
         },
         sendMessage(options){
             this.$axios.post('/api/chatEnter',options).then(res=>{
@@ -161,7 +179,7 @@ export default {
         height:100%;
         background:#f8f8f8;
         .content{
-            margin:50px 0;
+            margin:50px 0 70px 0;
             z-index: -1;
             overflow:auto;
         }
@@ -172,6 +190,7 @@ export default {
             left:0;
             height:50px;
             display:flex;
+            flex-wrap: wrap;
             input{
                 width:80%;
                 @include clearOB;
@@ -180,6 +199,32 @@ export default {
             button{
                 width:20%;
                 @include clearOB;
+            }
+            .icon{
+                position: absolute;
+                text-align: center;
+                top: -20px;
+                left: 0;
+                width: 100%;
+                height: 20px;
+                background: rgb(224,222,219);
+                line-height: 20px;
+                .gif{
+                    display: flex;
+                    position: absolute;
+                    padding: 0;
+                    background: #aaa;
+                    box-shadow: 0 0 10px #555;
+                    width: 100%;
+                    top: -50px;
+                    left: 0;
+                    justify-content: space-around;
+                    img{
+                        width: 30px;
+                        height: 30px;
+                        padding: 10px;
+                    }
+                }
             }
         }
         section{

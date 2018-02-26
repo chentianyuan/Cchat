@@ -67,8 +67,10 @@
 				// window.screen.availHeight获取屏幕可见高度
 				dom.style.height = window.screen.availHeight + 'px'
 				window.onkeydown = (e) => {
-					if(event.keyCode == 13){
+					if(event.keyCode == 13 && this.state){
 						this.login()
+					}else if(event.keyCode == 13 && !this.state){
+						this.register()
 					}
 				}
 			})
@@ -145,6 +147,9 @@
 								this.$store.dispatch('toggleLoging')
 								this.SETALERTINFO('注册成功,请登录')
 								this.SETALERT(true)
+								this.username2 = ''
+								this.password2 = ''
+								this.repeatPassword2 = ''
 								this.changeState('login')
 							}, 1000);	
 						}else{

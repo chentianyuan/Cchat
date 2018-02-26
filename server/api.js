@@ -3,6 +3,7 @@ const express = require('express')
 const router = express.Router()
 const db = require('./db')
 const axios = require('axios')
+const utils = require('utility')
 
 
 // 登陆
@@ -10,12 +11,12 @@ router.post('/api/login',(req,res)=>{
     db.User.find({},(err,doc)=>{
         let { user,pwd } = req.body
         for(value of doc){
-            if(user == value.name && pwd == value.pwd){
+            if(user == value.name && md5Pwd(pwd) == value.pwd){
                 req.session.userName = user
                 res.send({state:1,msg:'登陆成功'})
                 return 
             }
-            if(user == value.name && pwd != value.pwd){
+            if(user == value.name && md5Pwd(pwd) != value.pwd){
                 res.send({state:0,msg:'密码输入错误，请重新输入'})
                 return
             }
@@ -27,13 +28,19 @@ router.post('/api/login',(req,res)=>{
 //注册
 router.post('/api/register',(req,res)=>{
         let { user,pwd } = req.body
-        db.User.create({name:user,pwd:pwd},(err,doc)=>{
-        if(!err){
-            res.send({state:1,msg:'注册成功'})
-        }else{
-            res.send({state:0,msg:'注册失败'})
-        }
-    })
+        db.User.findOne({name:user},(err,doc)=>{
+            if(doc){
+                return res.json({state:0,msg:'用户名重复'})
+            }
+            // 未重复则创建之
+            db.User.create({name:user,pwd:md5Pwd(pwd)},(err,doc)=>{
+                if(!err){
+                    res.send({state:1,msg:'注册成功'})
+                }else{
+                    res.send({state:0,msg:'注册失败'})
+                }
+            })
+        })
 })
 
 // 聊天内容
@@ -59,7 +66,6 @@ router.post('/api/chatEnter',(req,res)=>{
 })
 
 router.post('/api/robot',(req,res)=>{
-    // console.log(req.body)
     let { key,appid,msg } = req.body
     // 写在url中的参数最好encode之后再交由后端解码,英文则无需解码
     axios.get(`http://api.qingyunke.com/api.php?key=${ key }&appid=${ appid }&msg=${ encodeURI(msg) }`,{header:'application/json'}).then((response)=>{
@@ -70,5 +76,11 @@ router.post('/api/robot',(req,res)=>{
         res.send({content:'接口挂了亲...'})
     })
 })
+
+// 加盐加密
+function md5Pwd(pwd){
+    const salt = 'wo_de_salt'
+    return utils.md5(utils.md5(pwd + salt))
+}
 
 module.exports = router
