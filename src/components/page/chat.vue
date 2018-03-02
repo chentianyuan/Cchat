@@ -153,7 +153,8 @@ export default {
     },
     beforeDestroy(){
         this.$store.commit('SETSOCKET','')        
-        document.querySelector('.header').style.position = 'relative'        
+        document.querySelector('.header').style.position = 'relative' 
+               
     },
     filters:{
        timetrans(date){

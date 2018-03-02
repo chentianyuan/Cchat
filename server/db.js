@@ -16,10 +16,16 @@ const chatSchema = new Schema({
     roomId: Number 
 })
 
+const picSchema = new Schema({
+    user: String,
+    base: String,
+})
+
 const Models = {
     // model自动寻找传入模型名称的复数版本,并转为小写，所以这边变成了users
     User: mongoose.model('User',userSchema),
-    Chat: mongoose.model('Chat',chatSchema)
+    Chat: mongoose.model('Chat',chatSchema),
+    Base: mongoose.model('Base',picSchema),
 }
 
 // 连接数据库

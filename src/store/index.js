@@ -15,7 +15,8 @@ export default new Vuex.Store({
 		// 存储连接的用户
 		socket:'',
 		userInfo:{
-			username:sessionStorage.getItem('USER')?sessionStorage.getItem('USER'):""
+			username:sessionStorage.getItem('USER')?sessionStorage.getItem('USER'):"",
+			pic:'../../../static/img/img.jpg'
 		},
 		alertInfo:''
 	},

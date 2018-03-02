@@ -4,7 +4,8 @@ const router = express.Router()
 const db = require('./db')
 const axios = require('axios')
 const utils = require('utility')
-
+const multipart = require('connect-multiparty');
+const multipartMiddleware = multipart()
 
 // 登陆
 router.post('/api/login',(req,res)=>{
@@ -33,7 +34,7 @@ router.post('/api/register',(req,res)=>{
                 return res.json({state:0,msg:'用户名重复'})
             }
             // 未重复则创建之
-            db.User.create({name:user,pwd:md5Pwd(pwd)},(err,doc)=>{
+            db.User.create({name:user,pwd:md5Pwd(pwd)},{'pwd':0},(err,doc)=>{
                 if(!err){
                     res.send({state:1,msg:'注册成功'})
                 }else{
@@ -69,12 +70,23 @@ router.post('/api/robot',(req,res)=>{
     let { key,appid,msg } = req.body
     // 写在url中的参数最好encode之后再交由后端解码,英文则无需解码
     axios.get(`http://api.qingyunke.com/api.php?key=${ key }&appid=${ appid }&msg=${ encodeURI(msg) }`,{header:'application/json'}).then((response)=>{
-        // console.log(response.data)
         res.send(response.data)
     }).catch(err=>{
-        // console.log(err)
         res.send({content:'接口挂了亲...'})
     })
+})
+
+router.post('/api/upload',multipartMiddleware,(req,res)=>{
+    // let { base,user } = req.body
+    // db.Base.create({user:user,base:base},(err,doc)=>{
+    //     if(!err){
+    //         res.send({state:1,msg:'存储成功'})
+    //     }else{
+    //         res.send({state:0,msg:'存储失败'})
+    //     }
+    // })
+    console.log(req.body)
+    // console.log(res)
 })
 
 // 加盐加密

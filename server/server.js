@@ -20,8 +20,9 @@ var websocket = require('./websocket')
 app.set('port', (process.env.port || 3000))
 // app.use(favicon(resolve('../dist/favicon.ico')))
 // 处理请求体所带的参数转为json格式方便处理
+// app.use(express.bodyParser())
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(cookieParser())
 // 处理静态文件路径
 app.use('/dist', express.static(resolve('../dist')))
@@ -37,14 +38,14 @@ app.use(session({
     }
 }))
 
-//CORS跨域配置
+// CORS跨域配置
 app.all('*',(req,res,next)=>{
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
 	res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
 		if (req.method == 'OPTIONS'){
 			res.sendStatus(200)
-		    //让options请求快速返回
+		    // 让options请求快速返回
 		}
 		else {
 		    next();
