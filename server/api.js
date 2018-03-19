@@ -4,8 +4,9 @@ const router = express.Router()
 const db = require('./db')
 const axios = require('axios')
 const utils = require('utility')
-const multipart = require('connect-multiparty');
-const multipartMiddleware = multipart()
+const formidable = require('formidable')
+// const multipart = require('connect-multiparty');
+// const multipartMiddleware = multipart()
 
 // 登陆
 router.post('/api/login',(req,res)=>{
@@ -76,17 +77,53 @@ router.post('/api/robot',(req,res)=>{
     })
 })
 
-router.post('/api/upload',multipartMiddleware,(req,res)=>{
-    // let { base,user } = req.body
-    // db.Base.create({user:user,base:base},(err,doc)=>{
-    //     if(!err){
-    //         res.send({state:1,msg:'存储成功'})
-    //     }else{
-    //         res.send({state:0,msg:'存储失败'})
-    //     }
-    // })
-    console.log(req.body)
-    // console.log(res)
+router.post('/api/getUserAvatar',(req,res)=>{
+    var {userName} = req.body
+    db.Base.findOne({user:userName},(err,doc)=>{
+        if(err){
+            res.send({state:0,msg:'查询头像失败，显示默认头像'})
+        }else{
+            res.send({state:1,msg:doc})
+        }
+    })
+})
+
+router.post('/api/upload',(req,res)=>{
+    // formidable应用
+    var form = formidable.IncomingForm() , userName , fileName
+    form.uploadDir =  './static/img'
+    form.encoding = 'utf-8'
+    // 保留原扩展名，否则会被转成base64格式
+    form.keepExtensions = true
+
+    // 上传过程中，检测field类型名称
+    form.on('field', (field, value) => {
+        if(field === 'user'){
+            userName = value
+        }
+    });
+    form.parse(req, function(err, fields, files) {
+        if(err){
+            res.send({state:0,msg:'存储失败'})
+        }
+        const avatar = files.file
+        // 传相对路径，webpack自动解析
+        const filePath = avatar.path
+        db.Base.findOne({user:userName},(err,doc)=>{
+            if(doc){
+                //设置新值
+                var newValue = {$set:{user:userName, base:filePath}}
+                db.Base.update({user:userName},newValue,(err,doc)=>{
+                    err?res.send({state:0,msg:'修改失败'}):res.send({state:1,msg:'修改成功',path:filePath})
+                })
+            }else{
+                // 第一次则创建之
+                db.Base.create({user:userName,base:filePath},(err,doc)=>{
+                    err?res.send({state:0,msg:'修改失败'}):res.send({state:1,msg:'修改成功',path:filePath})                
+                })
+            }
+        })
+    })
 })
 
 // 加盐加密

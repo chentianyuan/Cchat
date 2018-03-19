@@ -16,7 +16,7 @@ export default new Vuex.Store({
 		socket:'',
 		userInfo:{
 			username:sessionStorage.getItem('USER')?sessionStorage.getItem('USER'):"",
-			pic:'../../../static/img/img.jpg'
+			pic:'static/img/img.jpg'
 		},
 		alertInfo:''
 	},

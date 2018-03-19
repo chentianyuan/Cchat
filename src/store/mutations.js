@@ -26,5 +26,8 @@ export default {
     },
     SETALERTINFO:(state,info)=>{
         state.alertInfo = info
+    },
+    CHANGEAVATAR:(state,filepath)=>{
+        state.userInfo.pic = filepath
     }
 }
