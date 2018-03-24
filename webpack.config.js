@@ -14,7 +14,10 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         publicPath: '/dist/',
         // 多入口文件打包后有两个，不再是bundle.js，而是index.js和setup.js
-        filename: 'bundle.js'
+		filename: 'bundle.js',
+		// 处理热更新所产生的[hash].hot.update.js
+		hotUpdateChunkFilename: 'hot/hot-update.js',
+		hotUpdateMainFilename: 'hot/hot-update.json'
     },
     resolve:{
         //省略扩展名,首项不能为''

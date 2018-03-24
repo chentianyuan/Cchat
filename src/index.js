@@ -7,11 +7,14 @@ import router from './router/routes'
 
 
 Vue.use(Vuex)
+// 请求默认配置
+axios.defaults.withCredentials = true;
 Vue.prototype.$axios = axios //Vue实例添加axios方法
 
 // axios request 拦截器
 axios.interceptors.request.use(
     config => {
+		console.log(config)
         if (store.state.token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token，以验证登陆者的身份
             config.headers.Authorization = `token ${store.state.token}`;
         }
@@ -25,7 +28,14 @@ axios.interceptors.request.use(
 
 // axios response 拦截器
 axios.interceptors.response.use(
-	config => config
+	config => {
+		if(config.data.err && config.data.msg === 'unlogin'){
+			router.replace({path: '/'})
+				return {state:1,msg:'请先登录'}		
+		}else{
+			return config
+		}
+	}
 )
 
 router.beforeEach((to, from, next) => {
@@ -42,6 +52,7 @@ router.afterEach((to, from) => {
 // 混入
 var mixin = {
 	mounted(){
+		document.querySelector('#mainWarp').style.height = window.screen.availHeight + 'px'
 		//store.dispatch('toggleLoging')	
 	}
 }
@@ -52,8 +63,4 @@ new Vue({
 	router,
 	store,
 	// 所需的loading，toasting都在PageTransiton中加载
-	components:{},
-	mounted(){
-		document.querySelector('#mainWarp').style.height = window.screen.availHeight + 'px'
-	}
 }).$mount("#index")

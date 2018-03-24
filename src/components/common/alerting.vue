@@ -45,7 +45,7 @@ export default {
             right: 0;
             margin: auto;
             width: 280px;
-            height: 100px;
+            height: 120px;
             background: #fff;
             text-align: center;
             box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.6);    
@@ -58,7 +58,7 @@ export default {
                     padding:5px 0;
                 }
                 p{
-                    padding:5px 0;
+                    padding:15px 0;
                     font-size:1rem;
                 }
             }

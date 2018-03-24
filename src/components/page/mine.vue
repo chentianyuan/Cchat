@@ -120,7 +120,6 @@ export default {
       min-width: 100%;
       padding: 12px 2px;
       opacity: 0;
-      -ms-filter: 'alpha(opacity=0)';
     }
   }
 </style>

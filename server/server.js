@@ -23,7 +23,7 @@ app.set('port', (process.env.port || 3000))
 // app.use(express.bodyParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
-app.use(cookieParser())
+app.use(cookieParser('ownsecret'))
 // 处理静态文件路径
 app.use('/dist', express.static(resolve('../dist')))
 app.use(session({
@@ -32,7 +32,7 @@ app.use(session({
     saveUninitialized: true, // 是否保存未初始化的会话
     // 设置存储session id的cookie信息
     cookie: {
-        secure: true,
+        secure: false, // 设置为true时，非https请求不会设置cookie
         maxAge: 1000 * 6 * 3 // 设置次cookie的过期时间
         // 传统cookie被设置在浏览器中，session id存储在服务器内存中
     }
@@ -68,6 +68,23 @@ app.get('/',(req,res)=>{
         '<h1>接口提供页面，提供接口详细信息</h1><h2>请访问3001端口</h2>'
     )
 })
+
+// 后端拦截器
+// app.all('/*',function(req,res,next){
+//     console.log(req.path)
+//     if(req.path == '/api/login' || req.path == '/Chat'){
+//         next()
+//         return
+//     }else{
+//         if(req.session.userName){
+//             next()
+//             return
+//         }else{
+//             res.send({err:true,msg:'unlogin'})
+//             // res.redirect('/login') 服务端发起的重定向会被chrome拦截
+//         }
+//     }
+// })
 
 // 使用 express.Router 类来创建可安装的模块化路由处理程序
 // 传入模块化的路由处理程序，当作后端接口
