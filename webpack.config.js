@@ -2,6 +2,8 @@ const path = require('path')
 const webpack = require('webpack')
 const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin') //自动生成新的html，注入打包后的入口文件，不用手动引入
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+
 
 module.exports = {
 	watch: true,
@@ -81,7 +83,24 @@ module.exports = {
 		  template: path.resolve(__dirname, 'index.html'), // 写上模板文件
 		  filename: 'index.html',
 		  inject: 'body' // js的script注入到body底部
-		})
+		}),
+		// new CleanWebpackPlugin(['dist'])
+		// new webpack.optimize.CommonsChunkPlugin({
+		// 	name: 'vendor',
+		// 	minChunks: function(module) {
+		// 		return (
+		// 		module.resource &&
+		// 		/\.js$/.test(module.resource) &&
+		// 		module.resource.indexOf(
+		// 			path.join(__dirname, './node_modules')
+		// 		) === 0
+		// 		)
+		// 	}
+		// }),
+		// new webpack.optimize.CommonsChunkPlugin({
+		// 	name: 'manifest',
+		// 	chunks: ['vendor', 'index']
+		// })
 	],
 	devtool: 'cheap-module-eval-source-map' // 用于标记编译后的文件与编译前的文件对应位置，便于调试
 }

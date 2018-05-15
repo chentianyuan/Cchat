@@ -48,6 +48,10 @@ router.post('/api/register',(req,res)=>{
 // 聊天内容
 router.get('/api/chatContent',(req,res)=>{
     db.Chat.find({},(err,doc)=>{
+        // session可以存储各种用户信息以做标识
+        console.log(req.session.userName)
+        console.log(req.sessionID)
+        // session存储于内存中，sessionID是session认证的唯一标识
         if(!err){
             res.send({state:1,msg:doc})
         }else{

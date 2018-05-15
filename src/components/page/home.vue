@@ -21,11 +21,11 @@ export default {
         }
     },
     created(){
-        if(!this.getLogin){
-            this.SETALERTINFO('请先登录')
-			this.SETALERT(true)
-            this.$router.push({path:'/'})
-        }
+        // if(!this.getLogin){
+        //     this.SETALERTINFO('请先登录')
+		// 	this.SETALERT(true)
+        //     this.$router.push({path:'/'})
+        // }
     },
     // beforeRouterUpdate接受三个参数
     // 需要的地方设置次路由钩子即可

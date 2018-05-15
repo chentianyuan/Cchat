@@ -33,7 +33,7 @@ app.use(session({
     // 设置存储session id的cookie信息
     cookie: {
         secure: false, // 设置为true时，非https请求不会设置cookie
-        maxAge: 1000 * 6 * 3 // 设置次cookie的过期时间
+        maxAge: 1000 * 60 * 3 // 设置次cookie的过期时间
         // 传统cookie被设置在浏览器中，session id存储在服务器内存中
     }
 }))
@@ -70,21 +70,21 @@ app.get('/',(req,res)=>{
 })
 
 // 后端拦截器
-// app.all('/*',function(req,res,next){
-//     console.log(req.path)
-//     if(req.path == '/api/login' || req.path == '/Chat'){
-//         next()
-//         return
-//     }else{
-//         if(req.session.userName){
-//             next()
-//             return
-//         }else{
-//             res.send({err:true,msg:'unlogin'})
-//             // res.redirect('/login') 服务端发起的重定向会被chrome拦截
-//         }
-//     }
-// })
+app.all('/*',function(req,res,next){
+    // console.log(req.path)
+    if(req.path == '/api/login' || req.path == '/api/register'){
+        next()
+        return
+    }else{
+        if(req.session.userName){
+            next()
+            return
+        }else{
+            res.send({err:true,msg:'unlogin'})
+            // res.redirect('/login') 服务端发起的重定向会被chrome拦截
+        }
+    }
+})
 
 // 使用 express.Router 类来创建可安装的模块化路由处理程序
 // 传入模块化的路由处理程序，当作后端接口
@@ -92,7 +92,6 @@ app.use(api)
 
 // socket.io处理通信
 websocket(http)
-
 
 // express提供的服务器在3000端口(不设置的话默认3000)
 // 此处是由http模块express为载体的服务器端

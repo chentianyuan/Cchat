@@ -4,9 +4,7 @@
   "description": "Cchat",
   "main": "index.js",
   "scripts": {
-    "watch": "webpack --config webpack.config.js",
-    "注释！！！！！": "dev启用，打包与热更新都放在server.js中，直接npm start",
-    "dev": "webpack-dev-server --inline --config webpack.config.dev.js",
+    "dev": "webpack",
     "start": "node ./server/server.js"
   },
   "keywords": [],
@@ -42,6 +40,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-runtime": "^6.26.0",
     "chokidar": "^2.0.0",
+    "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^0.28.8",
     "express": "^4.16.2",
     "html-webpack-plugin": "^2.30.1",

@@ -15,6 +15,7 @@ Router.prototype.go = function () {
       
 
 export default new Router({
+    mode:'hash',
     routes:[{
         path:'/',
         component: PageTransition, // 引入页面切换组件
