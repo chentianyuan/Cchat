@@ -92,10 +92,17 @@ router.post('/api/getUserAvatar',(req,res)=>{
     })
 })
 
+const qnconfig = require('./config.js')
+
+router.get('/api/token',(req,res)=>{
+    // 返回上传七牛云所需的token
+    res.status(200).send(qnconfig.uploadToken)    
+})
+
 router.post('/api/upload',(req,res)=>{
     // formidable应用
     var form = formidable.IncomingForm() , userName , fileName
-    form.uploadDir =  './static/img'
+    // form.uploadDir =  './static/img'
     form.encoding = 'utf-8'
     // 保留原扩展名，否则会被转成base64格式
     form.keepExtensions = true
@@ -105,14 +112,17 @@ router.post('/api/upload',(req,res)=>{
         if(field === 'user'){
             userName = value
         }
+        if(field === 'path'){
+            filePath = value
+        }
     });
     form.parse(req, function(err, fields, files) {
         if(err){
             res.send({state:0,msg:'存储失败'})
         }
-        const avatar = files.file
+        // const avatar = files.file
         // 传相对路径，webpack自动解析
-        const filePath = avatar.path
+        // const filePath = avatar.path
         db.Base.findOne({user:userName},(err,doc)=>{
             if(doc){
                 //设置新值

@@ -8,15 +8,17 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 module.exports = {
 	watch: true,
     entry:[
-		'webpack-dev-server/client?http://localhost:3001',
-		'webpack/hot/dev-server', // 热替换处理入口文件
-        path.resolve(__dirname,"src/index.js")
+		// 'webpack-dev-server/client?http://localhost:3000',
+		// 'webpack/hot/dev-server', // 热替换处理入口文件
+		path.resolve(__dirname,"src/index.js"),
+		'webpack-hot-middleware/client?reload=true'		
 	],
     output:{
         path: path.resolve(__dirname, 'dist'),
-        publicPath: '/dist/',
+        publicPath: 'http://localhost:3000/',
         // 多入口文件打包后有两个，不再是bundle.js，而是index.js和setup.js
 		filename: 'bundle.js',
+		chunkFilename: '[name].js',
 		// 处理热更新所产生的[hash].hot.update.js
 		hotUpdateChunkFilename: 'hot/hot-update.js',
 		hotUpdateMainFilename: 'hot/hot-update.json'
@@ -48,7 +50,7 @@ module.exports = {
 		       	//所以 babel 提供了 transform-runtime 来将这些辅助函数“搬”到一个单独的模块 babel-runtime 中
 				//这样做能减小项目文件的大小。
 				//除了在webpack中配置还需要创建.babelrc文件，这个文件是babel的专属文件
-				"plugins":['transform-runtime','transform-object-rest-spread']
+				"plugins":['transform-runtime','transform-object-rest-spread','syntax-dynamic-import']
 			},
 			exclude: /node_modules/			
 		},{
@@ -84,6 +86,7 @@ module.exports = {
 		  filename: 'index.html',
 		  inject: 'body' // js的script注入到body底部
 		}),
+		new webpack.NoEmitOnErrorsPlugin()   //出错时只打印错误，但不重新加载页面
 		// new CleanWebpackPlugin(['dist'])
 		// new webpack.optimize.CommonsChunkPlugin({
 		// 	name: 'vendor',

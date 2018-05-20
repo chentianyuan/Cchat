@@ -1,5 +1,5 @@
 <template>
-  <div id="mainWarp">
+  <div id="mainWarp" ref="mainWarp">
     <loading></loading>
     <transition :name="transitionName">
       <router-view class="child-view"></router-view>
@@ -17,6 +17,11 @@ import alerting from './common/alerting.vue'
       return {
         transitionName: 'slide-left'
       }
+    },
+    mounted(){
+      this.$nextTick(()=>{
+				this.$refs.mainWarp.style.height = window.screen.availHeight + 'px'      
+      })
     },
     // beforeRouterUpdate接受三个参数
     beforeRouteUpdate (to, from, next) {

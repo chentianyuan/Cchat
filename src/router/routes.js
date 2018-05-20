@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import login from '../components/login'
-import home from '../components/page/home'
-import main from '../components/page/main'
-import mine from '../components/page/mine'
-import chat from '../components/page/chat'
+// import login from '../components/login'
+// import home from '../components/page/home'
+// import main from '../components/page/main'
+// import mine from '../components/page/mine'
+// import chat from '../components/page/chat'
 import PageTransition from '../components/PageTransition'
 
 Vue.use(Router)
@@ -22,20 +22,30 @@ export default new Router({
         children:[
             {
                 path:'',
-                component:login,              
+                name:'login',
+                // component:login,              
+                component:()=>import('../components/login.vue')
             },
             {
                 path:'/Cchat',
-                component:home,
+                // name:'home',
+                // component:home,
+                component:()=>import('../components/page/home.vue'),                
                 children:[{
                     path:'',
-                    component:main
+                    name:'main',
+                    // component:main
+                    component:()=>import('../components/page/main.vue')                    
                 },{
                     path:'mine',
-                    component:mine
+                    name:'mine',
+                    // component:mine
+                    component:()=>import('../components/page/mine.vue')
                 },{
                     path:'chat/:id',
-                    component:chat
+                    name:'chat',
+                    // component:chat
+                    component:()=>import('../components/page/chat.vue')                
                 }]
             }
         ]}

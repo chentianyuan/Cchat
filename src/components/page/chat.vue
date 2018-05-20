@@ -35,11 +35,11 @@ export default {
             inputText:'',
             roomId:'',
             gifList:[
-                '../../../static/gif/1.gif',
-                '../../../static/gif/2.gif',
-                '../../../static/gif/3.gif',
-                '../../../static/gif/4.gif',
-                '../../../static/gif/5.gif'               
+                require('../../../static/gif/1.gif'),
+                require('../../../static/gif/2.gif'),
+                require('../../../static/gif/3.gif'),
+                require('../../../static/gif/4.gif'),
+                require('../../../static/gif/5.gif')               
             ],
             gifshow:false
         }
@@ -92,7 +92,7 @@ export default {
             }
             var options = { 
                 user:this.getUserInfo.username,
-                content:this.inputText || `../../../static/gif/${gifIndex}.gif`,
+                content:this.inputText || require(`../../../static/gif/${gifIndex}.gif`),
                 date:new Date().getTime(),
                 roomId:this.roomId
             }

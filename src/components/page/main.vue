@@ -21,8 +21,8 @@ export default {
     data(){
         return{
             list:[
-                {imgSrc:"../../../static/img/chat1.jpg"},
-                {imgSrc:"../../../static/img/chat2.jpg"}
+                {imgSrc:require("../../../static/img/chat1.jpg")},
+                {imgSrc:require("../../../static/img/chat2.jpg")}
             ]
         }
     },

@@ -65,7 +65,11 @@
 			this.$nextTick(()=>{
 				let dom = document.querySelector("#enter")
 				// window.screen.availHeight获取屏幕可见高度
-				dom.style.height = window.screen.availHeight + 'px'
+				try{
+					dom.style.height = window.screen.availHeight + 'px'
+				}catch(err){
+					
+				}
 				window.onkeydown = (e) => {
 					if(event.keyCode == 13 && this.state){
 						this.login()
